@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Aux from "../../hoc/Auxi";
 import Burger from "../../Components/Burger/Burger";
 import BuildControls from "../../Components/Burger/BuildControls/BuildControls";
-import Model from '../../Components/UI/Model/Model'
-import OrderSummary from '../../Components/Burger/OrderSummary/OrderSummary'
+import Model from "../../Components/UI/Model/Model";
+import OrderSummary from "../../Components/Burger/OrderSummary/OrderSummary";
 const INGREDIENT_PRICE = {
   salad: 2.1,
   bacon: 1.3,
@@ -20,18 +20,20 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 5,
     purchasable: false,
-    purchasing:false,
+    purchasing: false,
   };
   updatePurchasable(ingredients) {
     //  const ingredients={
     //    ...this.state.ingredients
     //  }
-     const sum = Object.keys(ingredients).map(igkey =>{
-       return ingredients[igkey]
-     }).reduce((sum,el)=>{
-         return sum + el
-     },0)
-     this.setState({purchasable: sum >0})
+    const sum = Object.keys(ingredients)
+      .map((igkey) => {
+        return ingredients[igkey];
+      })
+      .reduce((sum, el) => {
+        return sum + el;
+      }, 0);
+    this.setState({ purchasable: sum > 0 });
   }
   addIngredientHandler = (type) => {
     const oldIngredient = this.state.ingredients[type];
@@ -44,8 +46,7 @@ class BurgerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     const newPrice = additionPrice + oldPrice;
     this.setState({ totalPrice: newPrice, ingredients: updateIngredeint });
-     this.updatePurchasable(updateIngredeint)
-
+    this.updatePurchasable(updateIngredeint);
   };
 
   removiengredientHandler = (type) => {
@@ -63,14 +64,17 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice - DeductionPrice;
     this.setState({ totalPrice: newPrice, ingredients: removeIngredient });
     // this.updatePurchasable(updateIngredeint)
-    };
-    
-    purchaseHandler =()=>{
-      this.setState({ purchasing:true })
-    }
-    purchaseCloseHandler =()=>{
-       this.setState({purchasing:false})
-    }
+  };
+
+  purchaseHandler = () => {
+    this.setState({ purchasing: true });
+  };
+  purchaseCloseHandler = () => {
+    this.setState({ purchasing: false });
+  };
+  purchaseContinueHandler = () => {
+    alert(" You Continue ! ");
+  };
   render() {
     const disableInfo = {
       ...this.state.ingredients,
@@ -80,9 +84,16 @@ class BurgerBuilder extends Component {
     }
     return (
       <Aux>
-            <Model show={this.state.purchasing} modelClose={this.purchaseCloseHandler}>
-              <OrderSummary ingredients={this.state.ingredients}/>
-            </Model>
+        <Model
+          show={this.state.purchasing}
+          modelClose={this.purchaseCloseHandler}
+        >
+          <OrderSummary
+            purchaseCancle={this.purchaseCloseHandler}
+            purchaseContinue={this.purchaseContinueHandler}
+            ingredients={this.state.ingredients}
+          />
+        </Model>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           addIng={this.addIngredientHandler}
